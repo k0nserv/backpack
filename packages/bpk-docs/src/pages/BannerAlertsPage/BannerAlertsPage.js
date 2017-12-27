@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* @flow */
 
 import React, { Component } from 'react';
 import { durationSm, fontWeightBold } from 'bpk-tokens/tokens/base.es6';
@@ -52,7 +53,27 @@ const richMessage = (
   </span>
 );
 
-class BpkBannerDismissable extends Component {
+type Props = {
+  message: ?string,
+  type: string,
+};
+
+type State = {
+  show: boolean,
+};
+
+class BpkBannerDismissable extends Component<Props, State> {
+  setDismissed: Function;
+
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    message: PropTypes.string,
+  };
+
+  static defaultProps = {
+    message: null,
+  };
+
   constructor() {
     super();
 
@@ -87,18 +108,21 @@ class BpkBannerDismissable extends Component {
   }
 }
 
-BpkBannerDismissable.propTypes = {
-  message: PropTypes.string,
-  type: PropTypes.string,
+type BannerAlertConfig = {
+  show: boolean,
+  message: string,
+  type: string,
 };
-
-BpkBannerDismissable.defaultProps = {
-  message: null,
-  type: null,
+type DismissDemoState = {
+  dirty: boolean,
+  bannerAlerts: Array<BannerAlertConfig>,
 };
-
 // eslint-disable-next-line react/no-multi-comp
-class BpkBannerAlertDismissDemo extends Component {
+class BpkBannerAlertDismissDemo extends Component<any, DismissDemoState> {
+  reset: Function;
+  setDismissed: Function;
+  bannerAlerts: Array<BannerAlertConfig>;
+
   constructor() {
     super();
 
@@ -184,8 +208,25 @@ class BpkBannerAlertDismissDemo extends Component {
   }
 }
 
+type FadeDemoProps = {
+  type: string,
+  message: ?string,
+};
+type FadeDemoState = {
+  bannerAlertCount: number,
+};
 // eslint-disable-next-line react/no-multi-comp
-class BpkBannerAlertFadeDemo extends Component {
+class BpkBannerAlertFadeDemo extends Component<FadeDemoProps, FadeDemoState> {
+  addBannerAlert: Function;
+
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    message: PropTypes.string,
+  };
+
+  static defaultProps = {
+    message: null,
+  };
   constructor() {
     super();
 
@@ -221,16 +262,6 @@ class BpkBannerAlertFadeDemo extends Component {
     );
   }
 }
-
-BpkBannerAlertFadeDemo.propTypes = {
-  message: PropTypes.string,
-  type: PropTypes.string,
-};
-
-BpkBannerAlertFadeDemo.defaultProps = {
-  message: null,
-  type: null,
-};
 
 const components = [
   {
