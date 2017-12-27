@@ -25,6 +25,7 @@ import BpkAnimateHeight from 'bpk-animate-height';
 import BpkBannerAlert, {
   ALERT_TYPES,
   withBannerAlertState,
+  CONFIGURATION,
 } from 'bpk-component-banner-alert';
 import BpkButton from 'bpk-component-button';
 import bannerAlertReadme from 'bpk-component-banner-alert/readme.md';
@@ -182,7 +183,7 @@ class BpkBannerAlertDismissDemo extends Component<any, DismissDemoState> {
         {this.state.bannerAlerts.map((b, i) => (
           <BpkBannerAlert
             bannerClassName={componentClassName}
-            dismissable
+            configuration={CONFIGURATION.DISMISSABLE}
             dismissButtonLabel="Dismiss"
             key={i.toString()}
             message={b.message}
@@ -209,6 +210,7 @@ class BpkBannerAlertDismissDemo extends Component<any, DismissDemoState> {
 }
 
 type FadeDemoProps = {
+  configuration: string,
   type: string,
   message: ?string,
 };
@@ -220,6 +222,7 @@ class BpkBannerAlertFadeDemo extends Component<FadeDemoProps, FadeDemoState> {
   addBannerAlert: Function;
 
   static propTypes = {
+    configuration: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     message: PropTypes.string,
   };
@@ -249,6 +252,7 @@ class BpkBannerAlertFadeDemo extends Component<FadeDemoProps, FadeDemoState> {
         <BpkButton onClick={this.addBannerAlert}>Add banner alert!</BpkButton>
         {[...Array(this.state.bannerAlertCount)].map((e, i) => (
           <BpkBannerDismissable
+            configuration={this.props.configuration}
             bannerClassName={componentClassName}
             key={i.toString()}
             message={this.props.message}
@@ -294,24 +298,28 @@ const components = [
       <BannerAlert
         message="neutral alert with more information."
         type={ALERT_TYPES.NEUTRAL}
+        configuration={CONFIGURATION.EXPANDABLE}
       >
         {longMessage}
       </BannerAlert>,
       <BannerAlert
         message="Successful alert with more information."
         type={ALERT_TYPES.SUCCESS}
+        configuration={CONFIGURATION.EXPANDABLE}
       >
         {longMessage}
       </BannerAlert>,
       <BannerAlert
         message="Warn alert with more information."
         type={ALERT_TYPES.WARN}
+        configuration={CONFIGURATION.EXPANDABLE}
       >
         {longMessage}
       </BannerAlert>,
       <BannerAlert
         message="Error alert with more information."
         type={ALERT_TYPES.ERROR}
+        configuration={CONFIGURATION.EXPANDABLE}
       >
         {longMessage}
       </BannerAlert>,
@@ -346,7 +354,7 @@ const components = [
         bannerClassName={componentClassName}
         message="Neutral alert with dismiss option."
         type={ALERT_TYPES.NEUTRAL}
-        dismissable
+        configuration={CONFIGURATION.DISMISSABLE}
         dismissButtonLabel="Dismiss"
       />,
     ],
