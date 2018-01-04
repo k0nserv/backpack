@@ -21,7 +21,17 @@ import Shallow from 'react-test-renderer/shallow';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-jest.mock('bpk-tether');
+jest.mock(
+  'popper.js',
+  () =>
+    class Popper {
+      constructor(target, popover, options) {
+        options.onCreate();
+      }
+      scheduleUpdate = () => {};
+      destroy = () => {};
+    },
+);
 jest.mock('a11y-focus-store', () => ({
   storeFocus: jest.fn(),
   restoreFocus: jest.fn(),
@@ -113,6 +123,7 @@ describe('BpkPopoverPortal', () => {
           <div>My popover content</div>
         </BpkPopoverPortal>,
       );
+
       expect(result).toMatchSnapshot();
     });
   });
@@ -134,7 +145,7 @@ describe('BpkPopoverPortal', () => {
       </BpkPopoverPortal>,
     );
 
-    expect(portal.instance().tether).toBeNull();
+    expect(portal.instance().popper).toBeNull();
     expect(focusStore.storeFocus).not.toHaveBeenCalled();
     expect(focusScope.scopeFocus).not.toHaveBeenCalled();
     expect(focusStore.restoreFocus).not.toHaveBeenCalled();
@@ -199,7 +210,7 @@ describe('BpkPopoverPortal', () => {
     });
   });
 
-  it('should not create multiple tether instances when repositioning', done => {
+  it('should not create multiple popper instances when repositioning', done => {
     const portal = mount(
       <BpkPopoverPortal
         id="my-popover"
@@ -213,10 +224,10 @@ describe('BpkPopoverPortal', () => {
       </BpkPopoverPortal>,
     );
 
-    const { tether } = portal.instance();
+    const { popper } = portal.instance();
 
     portal.setProps({ target: <div>another target</div> }, () => {
-      expect(portal.instance().tether).toBe(tether);
+      expect(portal.instance().popper).toBe(popper);
       done();
     });
   });

@@ -2,9 +2,19 @@
 
 ## UNRELEASED
 
-**Changed:**
+**Breaking:**
+- bpk-component-datepicker:
 - bpk-component-popover:
- - On mobile screen sizes, popovers now have a margin to prevent them from filling the entire width of their container.
+- bpk-component-tooltip:
+  - Swapped out tether positioning library in favour of popper.js
+  - Removed `tetherOptions` prop
+  - Added `placement` prop, accepts either `top`, `right`, `bottom` or `left`
+
+- bpk-component-popover:
+  - On mobile screen sizes, popovers now have a margin to prevent them from filling the entire width of their container.
+
+- bpk-mixins:
+  - TODO: I think we should just YOLO this and not make it breaking.
 
 ## 2018-01-04 - Fixing BpkBarChart events for bar hovering and focus
 

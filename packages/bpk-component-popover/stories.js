@@ -159,19 +159,7 @@ storiesOf('bpk-component-popover', module)
   ))
   .add('On the side', () => (
     <Spacer>
-      <PopoverContainer
-        id="my-popover"
-        tetherOptions={{
-          attachment: 'middle left',
-          constraints: [
-            {
-              to: 'window',
-              attachment: 'together',
-              pin: true,
-            },
-          ],
-        }}
-      />
+      <PopoverContainer id="my-popover" placement="right" />
     </Spacer>
   ))
   .add('Attach to external element', () => (
@@ -200,19 +188,6 @@ storiesOf('bpk-component-popover', module)
       <Paragraph id="reposition-alt-target" style={{ float: 'right' }}>
         Different target
       </Paragraph>
-      <PopoverContainer
-        id="my-popover"
-        changeProps
-        tetherOptions={{
-          attachment: 'top center',
-          constraints: [
-            {
-              to: document.getElementById('root'),
-              attachment: 'together',
-              pin: true,
-            },
-          ],
-        }}
-      />
+      <PopoverContainer id="my-popover" changeProps />
     </Spacer>
   ));
