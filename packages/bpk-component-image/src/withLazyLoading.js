@@ -20,7 +20,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { wrapDisplayName } from 'bpk-react-utils';
 
-export default function withLazyLoading(Component, document) {
+export default function withLazyLoading(Component, documentRef) {
   class WithLazyLoading extends React.Component {
     constructor() {
       super();
@@ -37,14 +37,13 @@ export default function withLazyLoading(Component, document) {
     }
 
     componentDidMount() {
-      const passiveArgs = this.supportsPassiveEvents() ? { passive: true } : {};
-      document.addEventListener('scroll', this.checkInView, {
+      documentRef.addEventListener('scroll', this.checkInView, {
         capture: true,
-        ...passiveArgs,
+        ...this.getPassiveArgs(),
       });
-      document.addEventListener('resize', this.checkInView);
-      document.addEventListener('orientationchange', this.checkInView);
-      document.addEventListener('fullscreenchange', this.checkInView);
+      documentRef.addEventListener('resize', this.checkInView);
+      documentRef.addEventListener('orientationchange', this.checkInView);
+      documentRef.addEventListener('fullscreenchange', this.checkInView);
       // call checkInView immediately incase the
       // component is already in view prior to scrolling
       this.checkInView();
@@ -61,15 +60,18 @@ export default function withLazyLoading(Component, document) {
       this.removeEventListeners();
     }
 
+    getPassiveArgs() {
+      return this.supportsPassiveEvents() ? { passive: true } : {};
+    }
+
     removeEventListeners() {
-      const passiveArgs = this.supportsPassiveEvents() ? { passive: true } : {};
-      document.removeEventListener('scroll', this.checkInView, {
+      documentRef.removeEventListener('scroll', this.checkInView, {
         capture: true,
-        ...passiveArgs,
+        ...this.getPassiveArgs(),
       });
-      document.removeEventListener('resize', this.checkInView);
-      document.removeEventListener('orientationchange', this.checkInView);
-      document.removeEventListener('fullscreenchange', this.checkInView);
+      documentRef.removeEventListener('resize', this.checkInView);
+      documentRef.removeEventListener('orientationchange', this.checkInView);
+      documentRef.removeEventListener('fullscreenchange', this.checkInView);
     }
 
     checkInView() {
@@ -91,6 +93,7 @@ export default function withLazyLoading(Component, document) {
           },
         });
         window.addEventListener('test', null, opts);
+        window.removeEventListener('test');
       } catch (e) {
         return false;
       }
@@ -102,11 +105,11 @@ export default function withLazyLoading(Component, document) {
 
       const viewPortHeight = Math.max(
         window.innerHeight,
-        document.documentElement.clientHeight,
+        documentRef.documentElement.clientHeight,
       );
       const viewPortWidth = Math.max(
         window.innerWidth,
-        document.documentElement.clientWidth,
+        documentRef.documentElement.clientWidth,
       );
 
       return (
