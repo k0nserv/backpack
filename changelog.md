@@ -37,6 +37,8 @@
 - bpk-component-banner-alert:
   - Removed `dismissable` property in favour of `configuration`.
   - A banner alert with `children` will no longer be auotmatically expandable. Use the newly introduce `configuration` prop instead.
+  - The `ariaLive` prop has been removed from `BpkBannerAlert`
+  - See the [migration guide](packages/bpk-component-banner-alert/docs/migrating-from-v1-to-v2.md)
 
 **Added:**
 - bpk-component-banner-alert:
